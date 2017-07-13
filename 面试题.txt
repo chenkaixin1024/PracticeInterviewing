@@ -1,0 +1,169 @@
+#include <iostream>
+using namespace std;
+
+//合并两个有序链表，合并以后的链表依旧有序
+//struct ListNode
+//{
+//	ListNode(int d)
+//		:data(d)
+//		,_next(NULL)
+//	{}
+//
+//	int data;
+//	ListNode* _next;
+//};
+//
+//ListNode* MergeList(ListNode* pHead1,ListNode* pHead2)
+//{
+//	ListNode* pNewList=NULL;
+//	ListNode* pcur=NULL;
+//
+//	while(pHead1&&pHead2)
+//	{
+//		if(pHead1->data>pHead2->data)
+//		{
+//			if(pNewList==NULL)
+//			{
+//				pNewList=pHead2;
+//			}
+//			else
+//			{
+//				pcur->_next=pHead2;
+//			}
+//			pcur=pHead2;
+//			pHead2=pHead2->_next;
+//		}
+//		else
+//		{
+//			if(pNewList==NULL)
+//			{
+//				pNewList=pHead1;
+//			}
+//			else
+//			{
+//				pcur->_next=pHead1;
+//			}
+//			pcur=pHead1;
+//			pHead1=pHead1->_next;
+//		}
+//	}
+//
+//	if(pHead1)
+//	{
+//		pcur->_next=pHead1;
+//	}
+//	else
+//	{
+//		pcur->_next=pHead2;
+//	}
+//
+//	return pNewList;
+//}
+//
+//
+//
+//void funtest()
+//{
+//	ListNode n1(1);
+//	ListNode n2(2);
+//	ListNode n3(3);
+//	ListNode n4(4);
+//	ListNode n5(5);
+//	ListNode n6(6);
+//	ListNode n7(7);
+//	ListNode n8(8);
+//
+//	n1._next=&n2;
+//	n2._next=&n5;
+//	n5._next=&n7;
+//
+//	n3._next=&n4;
+//	n4._next=&n6;
+//	n6._next=&n8;
+//	ListNode* l=MergeList(&n1,&n3);
+//}
+//
+//
+//int main()
+//{
+//	funtest();
+//	return 0;
+//}
+
+
+
+//实现1+2+3...+n，要求不能使用乘除法、循环、条件判断、选择相关的关键字。
+//（这个题有多种解法，大家可以尽量去思考，这个题最优的解法时间复杂度是O(1），大家可以去尝试实现）
+//int Sum(int n,int& ret)
+//{
+//	ret+=n;
+//	return (n-1)&&Sum(n-1,ret);
+//}
+
+//class A
+//{
+//public:
+//	A()
+//	{
+//		n++;
+//		ret+=n;
+//	}
+//
+//	static int n;
+//	static int ret;
+//};
+//
+//int A::n=0;
+//int A::ret=0;
+//
+//void Sum(int n)
+//{
+//	A* p=new A[n];
+//	cout<<A::ret<<endl;
+//}
+
+
+int Sum(int n);
+
+class A
+{
+public:
+	virtual int fun(int n)
+	{
+		return 0;
+	}
+
+};
+
+class B:public A
+{
+public:
+	virtual int fun(int n)
+	{
+		return n+Sum(n-1);
+	}
+
+};
+A* arr[2];
+
+int Sum(int n)
+{
+	A a;
+	B b;
+	
+	arr[0]=&a;
+	arr[1]=&b;
+
+	return arr[!!n]->fun(n);
+}
+
+
+int main()
+{
+	//int ret=0;
+	//Sum(100,ret);
+	//cout<<ret<<endl;
+
+	cout<<Sum(10)<<endl;
+	return 0;
+}
