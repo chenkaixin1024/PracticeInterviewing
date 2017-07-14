@@ -167,3 +167,130 @@ int main()
 	cout<<Sum(10)<<endl;
 	return 0;
 }
+
+-----------------------------------------------------------------------
+////逆置/反转单链表+查找单链表的倒数第k个节点，要求只能遍历一次链表
+//struct ListNode
+//{
+//	ListNode(int d)
+//		:data(d)
+//		,_next(NULL)
+//	{}
+//
+//	int data;
+//	ListNode* _next;
+//};
+//
+
+//ListNode* ReverseList(ListNode* pHead)
+//{
+//	if(pHead==NULL)
+//		return NULL;
+//	ListNode* pcur=pHead;
+//	ListNode* p=pcur;
+//	ListNode* pNewNode=NULL;
+//	while(pcur)
+//	{
+//		if(pNewNode==NULL)
+//		{
+//			pNewNode=pcur;
+//			pcur=pcur->_next;
+//			pNewNode->_next=NULL;
+//		}
+//		else
+//		{
+//			p=pcur->_next;
+//			pcur->_next=pNewNode;
+//			pNewNode=pcur;
+//			pcur=p;
+//		}
+//	}
+//
+//	return pNewNode;
+//}
+//
+//
+//ListNode* FindEndofKNode(ListNode* pHead,const int K)
+//{
+//	if(pHead==NULL)
+//		return NULL;
+//	
+//	ListNode* fast=pHead;
+//	ListNode* slow=pHead;
+//	int count=0;
+//	while(count<K&&fast)
+//	{
+//		count++;
+//		fast=fast->_next;
+//	}
+//	if(count<K)
+//	{
+//		return NULL;
+//	}
+//
+//	while(fast)
+//	{
+//		fast=fast->_next;
+//		slow=slow->_next;
+//	}
+//
+//	return slow;
+//}
+//
+//void funtest()
+//{
+//	ListNode n1(1);
+//	ListNode n2(2);
+//	ListNode n3(3);
+//	ListNode n4(4);
+//	ListNode n5(5);
+//	ListNode n6(6);
+//	ListNode n7(7);
+//	ListNode n8(8);
+//	
+//	n1._next=&n2;
+//	n2._next=&n3;
+//	n3._next=&n4;
+//	
+//	n4._next=&n5;
+//	n5._next=&n6;
+//	n6._next=&n7;
+//	n7._next=&n8;
+//	//ListNode* l=ReverseList(&n1);
+//	cout<<FindEndofKNode(&n1,2)->data<<endl;
+//	cout<<FindEndofKNode(&n1,1)->data<<endl;
+//	cout<<FindEndofKNode(&n1,5)->data<<endl;
+//	cout<<FindEndofKNode(&n1,9)->data<<endl;
+//}
+//
+//int main()
+//{
+//	funtest();
+//	return 0;
+//}
+
+#include <vector>
+//实现一个Add函数，让两个数相加，但是不能使用+、-、*、/等四则运算符。ps:也不能用++、--等等
+int Add(int left,int right)
+{
+	if(left==0)
+		return right;
+	if(right==0)
+		return left;
+
+	int sum=left^right;
+	int ot=left&right;
+
+	return Add(sum,ot);
+}
+
+void funtest()
+{
+	cout<<Add(10,200)<<endl;
+}
+
+int main()
+{
+	funtest();
+	return 0;
+}
