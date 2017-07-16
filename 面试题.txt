@@ -168,8 +168,8 @@ int main()
 	return 0;
 }
 
------------------------------------------------------------------------
-////逆置/反转单链表+查找单链表的倒数第k个节点，要求只能遍历一次链表
+
+
 //struct ListNode
 //{
 //	ListNode(int d)
@@ -181,62 +181,78 @@ int main()
 //	ListNode* _next;
 //};
 //
-
-//ListNode* ReverseList(ListNode* pHead)
+//bool ListhasLoop(ListNode* pHead)
 //{
-//	if(pHead==NULL)
-//		return NULL;
-//	ListNode* pcur=pHead;
-//	ListNode* p=pcur;
-//	ListNode* pNewNode=NULL;
-//	while(pcur)
-//	{
-//		if(pNewNode==NULL)
-//		{
-//			pNewNode=pcur;
-//			pcur=pcur->_next;
-//			pNewNode->_next=NULL;
-//		}
-//		else
-//		{
-//			p=pcur->_next;
-//			pcur->_next=pNewNode;
-//			pNewNode=pcur;
-//			pcur=p;
-//		}
-//	}
-//
-//	return pNewNode;
-//}
-//
-//
-//ListNode* FindEndofKNode(ListNode* pHead,const int K)
-//{
-//	if(pHead==NULL)
-//		return NULL;
-//	
 //	ListNode* fast=pHead;
 //	ListNode* slow=pHead;
-//	int count=0;
-//	while(count<K&&fast)
-//	{
-//		count++;
-//		fast=fast->_next;
-//	}
-//	if(count<K)
-//	{
-//		return NULL;
-//	}
 //
-//	while(fast)
+//	if(fast->_next)
 //	{
-//		fast=fast->_next;
+//		fast=fast->_next->_next;
+//		slow=slow->_next;
+//	}
+//	else
+//		return false;
+//
+//	while(fast&&fast->_next&&fast!=slow)
+//	{
+//		fast=fast->_next->_next;
+//		slow=slow->_next;
+//	}
+//	if(fast==slow)
+//		return true;
+//
+//	return false;
+//}
+//
+//ListNode* EnterPoint(ListNode* pHead)
+//{
+//	if(!ListhasLoop(pHead))
+//		return NULL;
+//
+//	ListNode* fast=pHead;
+//	ListNode* slow=pHead;
+//	fast=fast->_next->_next;
+//	slow=slow->_next;
+//
+//	while(fast!=slow)
+//	{
+//		fast=fast->_next->_next;
 //		slow=slow->_next;
 //	}
 //
-//	return slow;
+//	ListNode* pcur1=pHead;
+//	ListNode* pcur2=fast;
+//
+//	while(pcur1!=pcur2)
+//	{
+//		pcur1=pcur1->_next;
+//		pcur2=pcur2->_next;
+//	}
+//
+//	return pcur1;
 //}
 //
+//
+//int LengthofLoop(ListNode* pHead)
+//{
+//	if(!ListhasLoop(pHead))
+//		return 0;
+//
+//	ListNode* pNode=EnterPoint(pHead);
+//	ListNode* pcur=pNode->_next;
+//	int count=1;
+//	while(pcur!=pNode)
+//	{
+//		count++;
+//		pcur=pcur->_next;
+//	}
+//
+//	return count;
+//}
+//
+//
+////判断链表是否带环？若带环求环的长度？若带环求环的入口点？并计算以上每个问题的时间复杂度？
 //void funtest()
 //{
 //	ListNode n1(1);
@@ -256,11 +272,9 @@ int main()
 //	n5._next=&n6;
 //	n6._next=&n7;
 //	n7._next=&n8;
-//	//ListNode* l=ReverseList(&n1);
-//	cout<<FindEndofKNode(&n1,2)->data<<endl;
-//	cout<<FindEndofKNode(&n1,1)->data<<endl;
-//	cout<<FindEndofKNode(&n1,5)->data<<endl;
-//	cout<<FindEndofKNode(&n1,9)->data<<endl;
+//	//n8._next=&n1;
+//	cout<<EnterPoint(&n1)->data<<endl;
+//	cout<<LengthofLoop(&n1)<<endl;
 //}
 //
 //int main()
@@ -269,24 +283,356 @@ int main()
 //	return 0;
 //}
 
-#include <vector>
-//实现一个Add函数，让两个数相加，但是不能使用+、-、*、/等四则运算符。ps:也不能用++、--等等
-int Add(int left,int right)
+//1.设计一个类不能被继承 
+//class B
+//{
+//public:
+////private:
+//	B()
+//	{}
+//
+//	B(int b)
+//		:_b(b)
+//	{}
+//
+//	~B()
+//	{}
+//	//friend class A;
+//	int _b;
+//};
+//
+//class A: public B
+//{
+//public:
+//	A(int a=0)
+//		:_a(a)
+//	{
+//		B(2);
+//	}
+//	int _a;
+//};
+//
+//class C:public A
+//{
+//public:
+//	C(int c=0)
+//		:_c(c)
+//	{}
+//
+//	int _c;
+//};
+//
+//void funtest()
+//{
+//	C c;
+//	//c._a=1;
+//	//c._b=2;
+//	//c._c=3;
+//	cout<<c._b<<endl;
+//}
+//
+//int main()
+//{
+//	funtest();
+//	return 0;
+//}
+
+
+// 2.设计一个类只能在堆上创建对象。 
+//class A
+//{
+//public:
+//	static A* CreateObj()
+//	{
+//		return new A;
+//	}
+//
+//	void Delete()
+//	{
+//		delete this;
+//	}
+//
+//	//A()
+//	//{
+//	//	cout<<"A()"<<endl;
+//	//}
+//
+//	//~A()
+//	//{
+//	//	cout<<"~A()"<<endl;
+//	//}
+//
+//protected:
+//	A()
+//	{}
+//
+//	//~A()
+//	//{
+//	//	cout<<"~A()"<<endl;
+//	//}
+//
+//	int a;
+//};
+//
+//int main()
+//{
+//	//A a;
+//	if(1)
+//	{
+//		//A a;
+//		A* pa=A::CreateObj();
+//		pa->Delete();
+//	}
+//	return 0;
+//}
+
+
+
+
+//3.设计一个类只能在栈上创建对象。
+//class B
+//{
+//public:
+//	B()
+//	{}
+//
+//	~B()
+//	{}
+//
+//private:
+//	void* operator new(size_t)
+//	{}
+//
+//	void operator delete(void*)
+//	{}
+//};
+//
+//
+//int main()
+//{
+//	 B b;
+//	 B* pb=new B;
+//
+//
+//	return 0;
+//}
+
+
+
+
+//class A
+//{
+//public:
+//	A()
+//	{
+//		cout<<"A()"<<endl;
+//	}
+//
+//	~A()
+//	{
+//		cout<<"~A()"<<endl;
+//	}
+//	//int _a;
+//};
+//
+//class B:virtual public A
+//{
+//public:
+//	B()
+//	{
+//		cout<<"B()"<<endl;
+//	}
+//
+//	~B()
+//	{
+//		cout<<"~B()"<<endl;
+//	}
+//
+//	int _b;
+//};
+//
+//int main()
+//{
+//	B b;
+//	//b._a=1;
+//	b._b=2;
+//	return 0;
+//}
+
+
+//1.判断两个链表是否相交，若相交，求交点。（假设链表不带环）2.判断两个链表是否相交，若相交，求交点。（假设链表可能带环）
+struct ListNode
 {
-	if(left==0)
-		return right;
-	if(right==0)
-		return left;
+	ListNode(int d)
+		:data(d)
+		,_next(NULL)
+	{}
 
-	int sum=left^right;
-	int ot=left&right;
+	int data;
+	ListNode* _next;
+};
 
-	return Add(sum,ot);
+ListNode* HasIntersectionPiont_Noloop(ListNode* pHead1,ListNode* pHead2)
+{
+	if(pHead1==NULL||pHead2==NULL)
+		return NULL;
+
+	ListNode* pcur1=pHead1;
+	ListNode* pcur2=pHead2;
+	int len1=0;
+	int len2=0;
+
+	while(pcur1)
+	{
+		pcur1=pcur1->_next;
+		len1++;
+	}
+	while(pcur2)
+	{
+		pcur2=pcur2->_next;
+		len2++;
+	}
+
+	int k=0;
+	pcur1=pHead1;
+	pcur2=pHead2;
+	if(len1>len2)
+	{
+		k=len1-len2;
+		while(k--)
+		{
+			pcur1=pcur1->_next;
+		}
+	}
+	else
+	{
+		k=len2-len1;
+		while(k--)
+		{
+			pcur2=pcur2->_next;
+		}
+	}
+
+	while(pcur1&&pcur1!=pcur2)
+	{
+		pcur1=pcur1->_next;
+		pcur2=pcur2->_next;
+	}
+	if(pcur1==NULL)
+		return NULL;
+
+	return pcur1;
+}
+
+
+//2.判断两个链表是否相交，若相交，求交点。（假设链表可能带环）
+bool ListhasLoop(ListNode* pHead)
+{
+	ListNode* fast=pHead;
+	ListNode* slow=pHead;
+
+	if(fast->_next)
+	{
+		fast=fast->_next->_next;
+		slow=slow->_next;
+	}
+	else
+		return false;
+
+	while(fast&&fast->_next&&fast!=slow)
+	{
+		fast=fast->_next->_next;
+		slow=slow->_next;
+	}
+	if(fast==slow)
+		return true;
+
+	return false;
+}
+
+ListNode* EnterPoint(ListNode* pHead)
+{
+	if(!ListhasLoop(pHead))
+		return NULL;
+
+	ListNode* fast=pHead;
+	ListNode* slow=pHead;
+	fast=fast->_next->_next;
+	slow=slow->_next;
+
+	while(fast!=slow)
+	{
+		fast=fast->_next->_next;
+		slow=slow->_next;
+	}
+
+	ListNode* pcur1=pHead;
+	ListNode* pcur2=fast;
+
+	while(pcur1!=pcur2)
+	{
+		pcur1=pcur1->_next;
+		pcur2=pcur2->_next;
+	}
+
+	return pcur1;
+}
+
+ListNode* HasIntersectionPiont(ListNode* pHead1,ListNode* pHead2)
+{
+	if(pHead1==NULL||pHead2==NULL)
+		return NULL;
+
+	if(!ListhasLoop(pHead1)&&!ListhasLoop(pHead2))
+		return HasIntersectionPiont_Noloop(pHead1,pHead2);
+	else if(!ListhasLoop(pHead1)||!ListhasLoop(pHead2))
+		return NULL;
+	else
+	{
+		ListNode* pNode1=EnterPoint(pHead1);
+		ListNode* pNode2=EnterPoint(pHead2);
+		ListNode* pcur=pNode2;
+		pcur=pcur->_next;
+		while(pcur!=pNode2&&pcur!=pNode1)
+		{
+			pcur=pcur->_next;
+		}
+		if(pcur==pNode2&&pcur!=pNode1)
+			return NULL;
+
+		pcur=pNode1;
+		while(pcur->_next==pNode1)
+		{
+			pcur=pcur->_next;
+		}
+		pcur->_next=pHead1;
+		return EnterPoint(pHead2);
+	}
 }
 
 void funtest()
 {
-	cout<<Add(10,200)<<endl;
+	ListNode n1(1);
+	ListNode n2(2);
+	ListNode n3(3);
+	ListNode n4(4);
+	ListNode n5(5);
+	ListNode n6(6);
+	ListNode n7(7);
+	ListNode n8(8);
+	
+	n1._next=&n2;
+	n2._next=&n3;
+	n3._next=&n4;
+	//n4._next=&n2;
+	n4._next=&n5;
+	n5._next=&n3;
+
+	//n5._next=&n6;
+	n6._next=&n7;
+	n7._next=&n8;
+	n8._next=&n4;
+	cout<<HasIntersectionPiont(&n1,&n6)->data<<endl;
 }
 
 int main()
