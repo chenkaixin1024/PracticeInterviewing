@@ -1,0 +1,114 @@
+#include <stack>
+//1.实现一个栈Stack，要求实现Push（出栈）、Pop（入栈）、Min（返回最小值的操作）的时间复杂度为O(1) 
+template<class T>
+class Stack
+{
+public:
+	Stack()
+	{}
+
+	void Push(const T& data)
+	{
+		if(s.empty())
+		{
+			s.push(data);
+			s.push(data);
+		}
+		else
+		{
+			T min=s.top();
+			if(min>data)
+			{
+				s.push(data);
+				s.push(data);
+			}
+			else
+			{
+				s.push(data);
+				s.push(min);
+			}
+		}
+	}
+
+	void Pop()
+	{
+		s.pop();
+		s.pop();
+	}
+
+	int Min()
+	{
+		return s.top();
+	}
+
+private:
+	stack<T> s;
+};
+
+
+void funtest()
+{
+	Stack<int> _s;
+	_s.Push(4);
+	_s.Push(2);
+	cout<<_s.Min()<<endl;
+	_s.Push(3);
+	_s.Push(1);
+	cout<<_s.Min()<<endl;
+	_s.Push(5);
+	cout<<_s.Min()<<endl;
+
+	_s.Pop();
+	_s.Pop();
+	cout<<_s.Min()<<endl;
+	_s.Pop();
+	_s.Pop();
+	cout<<_s.Min()<<endl;
+	_s.Pop();
+
+}
+
+int main()
+{
+	funtest();
+	return 0;
+}
+
+
+//#include <string>
+////查找一个字符串中第一个只出现两次的字符。比如：“abcdefabcdefabc”中第一个只出现两次为‘d’，要求时间复杂度为O(N)，空间复杂度为O(1)
+//char FindfirstChofTwice(string str)
+//{
+//	int times[256]={0};
+//	string::iterator it=str.begin();
+//	while(it!=str.end())
+//	{
+//		//cout<<*it<<" ";
+//		times[*it]++;
+//		it++;
+//	}
+//
+//	it=str.begin();
+//	while(it!=str.end())
+//	{
+//		if(times[*it]==2)
+//			return *it;
+//		it++;
+//	}
+//
+//	cout<<"No twice ch"<<endl;
+//	return 0;
+//}
+//
+//
+//void funtest()
+//{
+//	string str="";
+//	cout<<FindfirstChofTwice(str)<<endl;
+//}
+//
+//int main()
+//{
+//	funtest();
+//	return 0;
+//}
