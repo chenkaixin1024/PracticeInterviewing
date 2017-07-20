@@ -1,0 +1,58 @@
+//元素出栈、入栈顺序的合法性。如：入栈的序列（1,2,3,4,5），出栈序列为（4,5,3,2,1），则合法。
+//入栈的序列（1,2,3,4,5），出栈序列为（4,5,2,3,1），则不合法。 
+
+bool IsLegal(int Push[],int Pushsize,int Pop[],int Popsize)
+{
+	if(Pushsize!=Popsize)
+		return false;
+
+	stack<int> s;
+	//s.push(Push[0]);
+	int i=0;
+	int j=0;
+	while(i<Pushsize||!s.empty())
+	{
+		if(s.empty())
+			s.push(Push[i++]);
+		else if(i<Pushsize)
+		{
+			if(s.top()==Pop[j])
+			{
+				s.pop();
+				j++;
+			}
+			else
+			{
+				s.push(Push[i++]);
+			}
+		}
+		else
+		{
+			if(s.top()==Pop[j])
+			{
+				s.pop();
+				j++;
+			}
+			else
+				break;
+		}
+	}
+
+	if(j<Popsize)
+		return false;
+
+	return true;
+}
+
+//计算一个整数二进制位中1的个数。要求效率尽可能的高。且能正确求正数和负数的二进制中1的个数
+int GetOneNum(int num)
+{
+	int count=0;
+	while(num!=0)
+	{
+		count++;
+		num=(num-1)&num;
+	}
+
+	return count;
+}
