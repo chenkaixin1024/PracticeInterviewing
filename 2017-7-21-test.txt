@@ -1,0 +1,117 @@
+//实现一颗二叉树的层序遍历
+//#include <queue>
+//
+//struct Node
+//{
+//	Node(int data)
+//		:_data(data)
+//		,_pLeft(NULL)
+//		,_pRight(NULL)
+//	{}
+//
+//	char _data;
+//	Node* _pLeft;
+//	Node* _pRight;
+//};
+//
+//class BinaryTree
+//{
+//public:
+//	BinaryTree(char arr[],int size)
+//	{
+//		int index=0;
+//		CreateTree(_pRoot,arr,size,index,'#');
+//	}
+//
+//	void CreateTree(Node*& pRoot,char arr[],int size,int& index,char invaid)
+//	{
+//		if(index<size)
+//		{
+//			if(arr[index]!=invaid)
+//			{
+//				pRoot=new Node(arr[index]);
+//				CreateTree(pRoot->_pLeft,arr,size,++index,invaid);
+//				CreateTree(pRoot->_pRight,arr,size,++index,invaid);
+//			}
+//		}
+//		
+//	}
+//
+//	Node* _pRoot;
+//};
+//
+//void LevelOrder(Node* pRoot)
+//{
+//	if(pRoot==NULL)
+//		return ;
+//
+//	queue<Node*> q;
+//	Node* pcur=pRoot;
+//	q.push(pRoot);
+//
+//	while(!q.empty())
+//	{
+//		pcur=q.front();
+//		cout<<pcur->_data<<" ";
+//		if(pcur->_pLeft)
+//			q.push(pcur->_pLeft);
+//		if(pcur->_pRight)
+//			q.push(pcur->_pRight);
+//
+//		q.pop();
+//	}
+//	cout<<endl;
+//}
+//
+//void funtest()
+//{
+//	char arr[]="124###3#7";
+//	BinaryTree bt(arr,strlen(arr));
+//	LevelOrder(bt._pRoot);
+//}
+//
+//int main()
+//{
+//	funtest();
+//	return 0;
+//}
+
+
+
+
+//给定一个整数N，那么N的阶乘N！末尾有多少个0呢？例如：N＝10，N！＝3 628 800，N！的末尾有两个0。
+long factorial(long N)
+{
+	if(N==0)
+		return 1;
+	return factorial(N-1)*N;
+}
+
+int FactorialofZeroNum(int num)
+{
+	return num/5;
+}
+
+void funtest()
+{
+	cout<<FactorialofZeroNum(15)<<endl;
+
+	//long i=1;
+	//int j=0;
+	//for(;i<=100;i++)
+	//{
+	//	cout<<factorial(i)<<" ";
+	//	j++;
+	//	if(j==5)
+	//	{
+	//		cout<<endl;
+	//		j=0;
+	//	}
+	//}
+}
+
+int main()
+{
+	funtest();
+	return 0;
+}
