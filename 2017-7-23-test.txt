@@ -1,0 +1,80 @@
+//求二叉树叶子节点的个数/求二叉树第k层的节点个数
+#include <assert.h>
+
+struct Node
+{
+	Node(int data)
+		:_data(data)
+		,_pLeft(NULL)
+		,_pRight(NULL)
+	{}
+
+	char _data;
+	Node* _pLeft;
+	Node* _pRight;
+};
+
+class BinaryTree
+{
+public:
+	BinaryTree(char arr[],int size)
+	{
+		int index=0;
+		CreateTree(_pRoot,arr,size,index,'#');
+	}
+
+	void CreateTree(Node*& pRoot,char arr[],int size,int& index,char invaid)
+	{
+		if(index<size)
+		{
+			if(arr[index]!=invaid)
+			{
+				pRoot=new Node(arr[index]);
+				CreateTree(pRoot->_pLeft,arr,size,++index,invaid);
+				CreateTree(pRoot->_pRight,arr,size,++index,invaid);
+			}
+		}
+
+	}
+
+	Node* _pRoot;
+};
+
+int NumofLeafNode(Node* pRoot)
+{
+	if(pRoot==NULL)
+		return 0;
+
+	if(pRoot->_pLeft==NULL&&pRoot->_pRight==NULL)
+		return 1;
+
+	return NumofLeafNode(pRoot->_pLeft)+NumofLeafNode(pRoot->_pRight);
+}
+
+int NumOfKLevel(Node* pRoot,int K)
+{
+	if(pRoot==NULL||K==0)
+		return 0;
+
+	if(K==1)
+		return 1;
+
+	return NumOfKLevel(pRoot->_pLeft,K-1)+NumOfKLevel(pRoot->_pRight,K-1);
+
+}
+
+
+void funtest()
+{
+	char arr[]="124##58###3#6#7";
+	//char arr[]="123";
+	BinaryTree bt(arr,strlen(arr));
+	//cout<<NumofLeafNode(bt._pRoot)<<endl;
+	cout<<NumOfKLevel(bt._pRoot,3)<<endl;
+}
+
+int main()
+{
+	funtest();
+	return 0;
+}
