@@ -1,0 +1,124 @@
+//判断一个节点是否在一棵二叉树中。（注意多测几个节点，看是否都能找到）
+
+struct Node
+{
+	Node(int data)
+		:_data(data)
+		,_pLeft(NULL)
+		,_pRight(NULL)
+	{}
+
+	char _data;
+	Node* _pLeft;
+	Node* _pRight;
+};
+
+class BinaryTree
+{
+public:
+	BinaryTree(char arr[],int size)
+	{
+		int index=0;
+		CreateTree(_pRoot,arr,size,index,'#');
+	}
+
+	void CreateTree(Node*& pRoot,char arr[],int size,int& index,char invaid)
+	{
+		if(index<size)
+		{
+			if(arr[index]!=invaid)
+			{
+				pRoot=new Node(arr[index]);
+				CreateTree(pRoot->_pLeft,arr,size,++index,invaid);
+				CreateTree(pRoot->_pRight,arr,size,++index,invaid);
+			}
+		}
+
+	}
+
+	Node* _pRoot;
+};
+
+
+//bool IsInTree(Node* pRoot,Node* n)
+//{
+//	if(pRoot==NULL)
+//		return false;
+//
+//	//if(pRoot->_pLeft==NULL&&pRoot->_pRight==NULL)
+//	//	return false;
+//
+//	if(pRoot==n)
+//		return true;
+//
+//	return IsInTree(pRoot->_pLeft,n)||IsInTree(pRoot->_pRight,n);
+//}
+//
+//void funtest()
+//{
+//	char arr[]="124###35##6";
+//	BinaryTree bt(arr,strlen(arr));
+//
+//	Node n(2);
+//	cout<<IsInTree(bt._pRoot,&n)<<endl;
+//}
+//
+//int main()
+//{
+//	funtest();
+//	return 0;
+//}
+
+
+
+//判断一颗二叉树是否是另一颗树的子树
+
+Node* Find(Node* pRoot,char data)
+{
+	if(pRoot==NULL)
+		return NULL;
+
+	if(pRoot->_data==data)
+		return pRoot;
+
+	Node* ret=Find(pRoot->_pLeft,data);
+	if(ret)
+		return ret;
+
+	return Find(pRoot->_pRight,data);
+}
+
+bool IsSubTree(Node* pRoot1,Node* pRoot2)
+{
+	if(pRoot2==NULL)
+		return true;
+
+	if(pRoot1==NULL)
+		return false;
+
+	//Node* pNode=Find(pRoot1,pRoot2->_data);
+	//if(pNode==NULL)
+	//	return false;
+
+	if(pRoot1->_data!=pRoot2->_data)
+		return IsSubTree(pRoot1->_pLeft,pRoot2)||IsSubTree(pRoot1->_pRight,pRoot2);
+
+	return IsSubTree(pRoot1->_pLeft,pRoot2->_pLeft)&&IsSubTree(pRoot1->_pRight,pRoot2->_pRight);
+}
+
+void funtest()
+{
+	char arr1[]="124###35##6";
+	char arr2[]="124";
+
+	BinaryTree bt1(arr1,strlen(arr1));
+	BinaryTree bt2(arr2,strlen(arr2));
+
+	cout<<IsSubTree(bt1._pRoot,bt2._pRoot)<<endl;
+}
+
+int main()
+{
+	funtest();
+	return 0;
+}
