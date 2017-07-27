@@ -1,0 +1,437 @@
+//实现二叉树的前序/中序/后序非递归遍历
+//#include <stack>
+//
+//struct Node
+//{
+//	Node(int data)
+//		:_data(data)
+//		,_pLeft(NULL)
+//		,_pRight(NULL)
+//	{}
+//
+//	char _data;
+//	Node* _pLeft;
+//	Node* _pRight;
+//};
+//
+//class BinaryTree
+//{
+//public:
+//	BinaryTree(char arr[],int size)
+//	{
+//		int index=0;
+//		CreateTree(_pRoot,arr,size,index,'#');
+//	}
+//
+//	void CreateTree(Node*& pRoot,char arr[],int size,int& index,char invaid)
+//	{
+//		if(index<size)
+//		{
+//			if(arr[index]!=invaid)
+//			{
+//				pRoot=new Node(arr[index]);
+//				CreateTree(pRoot->_pLeft,arr,size,++index,invaid);
+//				CreateTree(pRoot->_pRight,arr,size,++index,invaid);
+//			}
+//		}
+//
+//	}
+//
+//	Node* _pRoot;
+//};
+//
+//void PreOrder(Node* pRoot)
+//{
+//	if(pRoot==NULL)
+//		return ;
+//
+//	stack<Node*> s;
+//	s.push(pRoot);
+//
+//	while(!s.empty())
+//	{
+//		Node* pcur=s.top();
+//		cout<<pcur->_data<<" ";
+//		s.pop();
+//
+//		if(pcur->_pRight)
+//			s.push(pcur->_pRight);
+//		if(pcur->_pLeft)
+//			s.push(pcur->_pLeft);
+//	}
+//	
+//}
+//
+//void InOrder(Node* pRoot)
+//{
+//	if(pRoot==NULL)
+//		return ;
+//
+//	stack<Node*> s;
+//	Node* pcur=pRoot;
+//	
+//	while(pcur||!s.empty())
+//	{
+//		while(pcur)
+//		{
+//			s.push(pcur);
+//			pcur=pcur->_pLeft;
+//		}
+//
+//		pcur=s.top();
+//		s.pop();
+//		cout<<pcur->_data<<" ";
+//		pcur=pcur->_pRight;
+//	}
+//}
+//
+//
+//void LastOrder(Node* pRoot)
+//{
+//	if(pRoot==NULL)
+//		return ;
+//
+//	stack<Node*> s;
+//	Node* pcur=pRoot;
+//	Node* pre=NULL;
+//
+//	while(pcur||!s.empty())
+//	{
+//		while(pcur)
+//		{
+//			s.push(pcur);
+//			pcur=pcur->_pLeft;
+//		}
+//
+//		pcur=s.top();
+//		while(pcur->_pRight==NULL||pcur->_pRight==pre)
+//		{
+//			cout<<pcur->_data<<" ";
+//			pre=pcur;
+//			s.pop();
+//			if(s.empty())
+//				return ;
+//			pcur=s.top();
+//		}
+//
+//		pcur=pcur->_pRight;
+//		//else
+//		//{
+//		//	pcur=pcur->_pRight;
+//		//}
+//	}
+//}
+//
+//void funtest()
+//{
+//	char arr[]="124###35##6";
+//	BinaryTree bt(arr,strlen(arr));
+//	PreOrder(bt._pRoot);
+//	cout<<endl;
+//	InOrder(bt._pRoot);
+//	cout<<endl;
+//	LastOrder(bt._pRoot);
+//}
+//
+//int main()
+//{
+//	funtest();
+//	return 0;
+//}
+
+
+//已知集合A和B的元素分别用不含头结点的单链表存储，
+//函数difference()用于求解集合A与B的差集，并将结果保存在集合A的单链表中。
+//例如，若集合A={5,10,20,15,25,30}，集合B={5,15,35,25}，完成计算后A={10,20,30}。
+
+//struct Node 
+//{ 
+//	Node(int data)
+//		:elem(data)
+//		,next(NULL)
+//	{}
+//
+//
+//	int elem; 
+//	Node* next; 
+//}; 
+
+//Node* Order(Node* pHead)
+//{
+//	if(pHead==NULL)
+//		return NULL;
+//
+//	Node* pNewHead=NULL;
+//	Node* pcur=pHead;
+//	while(pcur)
+//	{
+//		Node* cur=pcur->next;
+//		Node* pTemp=pNewHead;
+//		Node* pre=pNewHead;
+//		while(pTemp||pNewHead==NULL)
+//		{
+//			if(pNewHead==NULL)
+//			{
+//				pNewHead=pcur;
+//				pcur->next=NULL;
+//				pTemp=pNewHead;
+//				break;
+//			}
+//			else 
+//			{
+//				if(pTemp->elem>pcur->elem)
+//				{
+//					if(pTemp==pNewHead)
+//					{
+//						pNewHead=pcur;
+//						pcur->next=pTemp;
+//					}
+//					else
+//					{
+//						pre->next=pcur;
+//						pcur->next=pTemp;
+//					}
+//
+//					break;
+//				}
+//
+//				pre=pTemp;
+//				pTemp=pTemp->next;
+//			}
+//		}
+//
+//		if(pTemp==NULL)
+//		{
+//			pre->next=pcur;
+//			pcur->next=NULL;
+//		}
+//		pcur=cur;
+//	}
+//
+//	return pNewHead;
+//}
+//
+//Node* Difference(Node* pHead1,Node* pHead2)
+//{
+//	if(pHead1==NULL&&pHead2==NULL)
+//		return NULL;
+//
+//	pHead1=Order(pHead1);
+//	pHead2=Order(pHead2);
+//
+//	Node* pNewNode=NULL;
+//	Node* pNode=NULL;
+//	Node* pcur1=NULL;
+//	Node* pcur2=NULL;
+//	while(pHead1&&pHead2)
+//	{
+//		if(pHead1->elem>pHead2->elem)
+//		{
+//			pHead2=pHead2->next;
+//		}
+//		else if(pHead2->elem>pHead1->elem)
+//		{
+//			if(pNewNode==NULL)
+//			{
+//				pNewNode=pHead1;
+//				pHead1=pHead1->next;
+//				pNode=pNewNode;
+//			}
+//			else
+//			{
+//				pNode->next=pHead1;
+//				pNode=pHead1;
+//				pHead1=pHead1->next;
+//			}
+//		}
+//		else
+//		{
+//			pHead1=pHead1->next;
+//			pHead2=pHead2->next;
+//		}
+//	}
+//
+//	if(pHead2==NULL)
+//	{
+//		if(pNewNode==NULL)
+//			pNewNode=pHead1;
+//		else
+//			pNode->next=pHead1;
+//	}
+//
+//	return pNewNode;
+//}
+
+
+
+//Node* Difference(Node* pHead1,Node* pHead2)
+//{
+//	if(pHead1==NULL)
+//		return NULL;
+//
+//	if(pHead2==NULL)
+//		return pHead1;
+//
+//	Node* pcur1=pHead1;
+//	Node* pcur2=pHead2;
+//	Node* pre=NULL;
+//
+//	while(pcur1)
+//	{
+//		while(pcur2)
+//		{
+//			if(pcur2->elem==pcur1->elem)
+//			{
+//				if(pre==NULL)
+//				{
+//					pHead1=pcur1->next;
+//					//delete pcur1;
+//					pcur1=pHead1;
+//				}
+//				else
+//				{
+//					pre->next=pcur1->next;
+//					//delete pcur1;
+//					pcur1=pre->next;
+//				}
+//				break;
+//
+//			}
+//			pcur2=pcur2->next;
+//		}
+//		if(pcur2==NULL)
+//		{
+//			pre=pcur1;
+//			pcur1=pcur1->next;
+//		}
+//		pcur2=pHead2;
+//		
+//	}
+//
+//	return pHead1;
+//}
+//
+//
+//void funtest()
+//{
+//	//5,10,20,15,25,30
+//	Node n1(5);
+//	Node n2(10);
+//	Node n3(20);
+//	Node n4(15);
+//	Node n5(25);
+//	Node n6(30);
+//
+//	n1.next=&n2;
+//	n2.next=&n3;
+//	n3.next=&n4;
+//	n4.next=&n5;
+//	n5.next=&n6;
+//
+//	Node n7(5);
+//	Node n8(15);
+//	Node n9(35);
+//	Node n10(25);
+//
+//	n7.next=&n8;
+//	n8.next=&n9;
+//	n9.next=&n10;
+//
+//	Node* d=Difference(&n1,&n7);
+//}
+//
+//int main()
+//{
+//	funtest();
+//	return 0;
+//}
+
+
+
+
+//#include <string>
+//#include <string.h>
+
+//bool IsDoubleStr(char* s)
+//{
+//	int len=strlen(s);
+//	int sublen=len/2;
+//	char* sub1=s;
+//	char* sub2=s+sublen;
+//	int i=0;
+//
+//	for(i=0;i<sublen;i++)
+//	{
+//		if(sub1[i]!=sub2[i])
+//			return false;
+//	}
+//
+//	return true;
+//}
+//
+//int GetMaxLengthofDoublestr(char* s)
+//{
+//	int i=2;
+//	int len=strlen(s);
+//	for(i=2;i<len;i+=2)
+//	{
+//		s[len-i]='\0';
+//		if(IsDoubleStr(s))
+//			return len-i;
+//	}
+//	return 0;
+//}
+//
+//void funtest()
+//{
+//	string s;
+//	cin>>s;
+//	cout<<GetMaxLengthofDoublestr((char*)s.c_str())<<endl;
+//}
+//
+//int main()
+//{
+//	funtest();
+//	return 0;
+//}
+
+
+//#include <string>
+//
+//int NumOfBackStr(string s)
+//{
+//	if(s.size()==1)
+//		return 1;
+//
+//	int strcount[26]={0};
+//	string::iterator it=s.begin();
+//	while(it!=s.end())
+//	{
+//		strcount[*it-'a']++;
+//		it++;
+//	}
+//
+//	int i=0;
+//	int count=0;
+//	for(i=0;i<26;i++)
+//	{
+//		if(strcount[i]%2!=0)
+//			count++;
+//	}
+//
+//	return (count==0)?1:count;
+//}
+//
+//
+//void funtest()
+//{
+//	string s;
+//	cin>>s;
+//	cout<<NumOfBackStr(s)<<endl;
+//}
+//
+//int main()
+//{
+//	funtest();
+//	return 0;
+//}
