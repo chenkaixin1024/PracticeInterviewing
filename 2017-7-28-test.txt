@@ -1,0 +1,208 @@
+//判断一棵树是否是完全二叉树。提示：层序遍历变型题。
+
+//#include <queue>
+//
+struct Node
+{
+	Node(int data)
+		:_data(data)
+		,_pLeft(NULL)
+		,_pRight(NULL)
+	{}
+
+	char _data;
+	Node* _pLeft;
+	Node* _pRight;
+};
+
+class BinaryTree
+{
+public:
+	BinaryTree(char arr[],int size)
+	{
+		int index=0;
+		CreateTree(_pRoot,arr,size,index,'#');
+	}
+
+	void CreateTree(Node*& pRoot,char arr[],int size,int& index,char invaid)
+	{
+		if(index<size)
+		{
+			if(arr[index]!=invaid)
+			{
+				pRoot=new Node(arr[index]);
+				CreateTree(pRoot->_pLeft,arr,size,++index,invaid);
+				CreateTree(pRoot->_pRight,arr,size,++index,invaid);
+			}
+		}
+
+	}
+
+	Node* _pRoot;
+};
+//
+//bool IsCompleteBinaryTree(Node* pRoot)
+//{
+//	if(pRoot==NULL)
+//		return true;
+//
+//	queue<Node*> q;
+//	Node* pcur=NULL;
+//	q.push(pRoot);
+//
+//	while((pcur=q.front())!=NULL)
+//	{
+//		q.push(pcur->_pLeft);
+//		q.push(pcur->_pRight);
+//		q.pop();
+//	}
+//
+//	while(!q.empty()&&(pcur=q.front())==NULL)
+//	{
+//		q.pop();
+//	}
+//
+//	if(!q.empty())
+//		return false;
+//
+//	return true;
+//}
+//
+//void funtest()
+//{
+//	//char arr[]="124##35#6";
+//	char arr[]="124##8##3#6";
+//	BinaryTree bt(arr,strlen(arr));
+//
+//	cout<<IsCompleteBinaryTree(bt._pRoot)<<endl;
+//}
+//
+//int main()
+//{
+//	funtest();
+//	return 0;
+//}
+
+
+//求二叉树中两个节点的最近公共祖先
+
+#include <stack>
+
+//bool IsinTree(Node* pRoot,Node* n)
+//{
+//	if(pRoot==NULL)
+//		return false;
+//
+//	if(pRoot==n)
+//		return true;
+//
+//	return IsinTree(pRoot->_pLeft,n)||IsinTree(pRoot->_pRight,n);
+//}
+//
+//Node* FirstsameAncestorNode(Node* pRoot,Node* n1,Node* n2)
+//{
+//	if(!IsinTree(pRoot,n1)||!IsinTree(pRoot,n2))
+//		return NULL;
+//
+//	if(pRoot==n1||pRoot==n2)
+//		return pRoot;
+//
+//	bool n1isInleft=IsinTree(pRoot->_pLeft,n1);
+//	bool n1isInright=IsinTree(pRoot->_pRight,n1);
+//	bool n2isInleft=IsinTree(pRoot->_pLeft,n2);
+//	bool n2isInright=IsinTree(pRoot->_pRight,n2);
+//
+//	if((n1isInleft&&n2isInright)||(n1isInright&&n2isInleft))
+//		return pRoot;
+//	else if(n1isInleft&&n2isInleft)
+//		return FirstsameAncestorNode(pRoot->_pLeft,n1,n2);
+//	else
+//		return FirstsameAncestorNode(pRoot->_pRight,n1,n2);
+//}
+
+
+//bool GetPath(Node* pRoot,Node* n,stack<Node*>& s)
+//{
+//	if(pRoot==n)
+//	{
+//		s.push(pRoot);
+//		return true;
+//	}
+//
+//	s.push(pRoot);
+//	bool flag=false;
+//
+//	if(pRoot->_pLeft)
+//		flag=GetPath(pRoot->_pLeft,n,s);
+//	if(!flag&&pRoot->_pRight)
+//		flag=GetPath(pRoot->_pRight,n,s);
+//	if(!flag)
+//		s.pop();
+//
+//	return flag;
+//}
+//
+//Node* FirstsameAncestorNode(Node* pRoot,Node* n1,Node* n2)
+//{
+//	if(pRoot==NULL)
+//		return NULL;
+//
+//	stack<Node*> s1;
+//	stack<Node*> s2;
+//
+//	GetPath(pRoot,n1,s1);
+//	GetPath(pRoot,n2,s2);
+//
+//	int size1=s1.size();
+//	int size2=s2.size();
+//	int k=0;
+//
+//	if(size1>size2)
+//	{
+//		k=size1-size2;
+//		int i=0;
+//		for(;i<k;i++)
+//		{
+//			s1.pop();
+//		}
+//		while(s1.top()!=s2.top())
+//		{
+//			s1.pop();
+//			s2.pop();
+//		}
+//		return s1.top();
+//	}
+//	else
+//	{
+//		k=size2-size1;
+//		int i=0;
+//		for(;i<k;i++)
+//		{
+//			s2.pop();
+//		}
+//		while(s1.top()!=s2.top())
+//		{
+//			s1.pop();
+//			s2.pop();
+//		}
+//		return s1.top();
+//	}
+//
+//}
+//
+//
+//void funtest()
+//{
+//	char arr[]="124#7###358###6";
+//	BinaryTree bt(arr,strlen(arr));
+//	Node* n1=bt._pRoot->_pLeft;
+//	Node* n2=bt._pRoot->_pRight->_pRight;
+//	cout<<FirstsameAncestorNode(bt._pRoot,n1,n2)->_data<<endl;
+//}
+//
+//
+//int main()
+//{
+//	funtest();
+//	return 0;
+//}
