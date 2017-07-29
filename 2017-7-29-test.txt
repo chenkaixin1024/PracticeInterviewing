@@ -1,0 +1,210 @@
+//将二叉搜索树转换成一个排序的双向链表。
+//提示：要求不能创建任何新的结点，只能调整树中结点指针的指向，也就是left当prev，right当next。--中序线索化的变型
+
+//struct Node
+//{
+//	Node(int key,int value)
+//		:_key(key)
+//		,_value(value)
+//		,_pLeft(NULL)
+//		,_pRight(NULL)
+//	{}
+//
+//	int _key;
+//	int _value;
+//	Node* _pLeft;
+//	Node* _pRight;
+//};
+//
+//
+//class BinarySearchTree
+//{
+//public:
+//	BinarySearchTree()
+//		:_pRoot(NULL)
+//	{}
+//
+//	bool Insert(int key,int value)
+//	{
+//		return _Insert(_pRoot,key,value);
+//	}
+//
+//	bool _Insert(Node*& pRoot,int key,int value)
+//	{
+//		if(pRoot==NULL)
+//		{
+//			pRoot=new Node(key,value);
+//			return true;
+//		}
+//
+//		if(pRoot->_key==key)
+//			return false;
+//
+//		if(pRoot->_key>key)
+//			return _Insert(pRoot->_pLeft,key,value);
+//		else
+//			return _Insert(pRoot->_pRight,key,value);
+//	}
+//
+//	Node* _pRoot;
+//};
+//
+//void ToList(Node* pRoot,Node*& pre)
+//{
+//	if(pRoot==NULL)
+//		return ;
+//
+//	ToList(pRoot->_pLeft,pre);
+//	if(pre)
+//		pre->_pRight=pRoot;
+//	pRoot->_pLeft=pre;
+//	pre=pRoot;
+//
+//	ToList(pRoot->_pRight,pre);
+//}
+//
+//Node* GetList(Node* pRoot)
+//{
+//	Node* pre=NULL;
+//	ToList(pRoot,pre);
+//
+//	if(pRoot==NULL)
+//		return NULL;
+//
+//	Node* pcur=pRoot;
+//	while(pcur->_pLeft)
+//	{
+//		pcur=pcur->_pLeft;
+//	}
+//
+//	return pcur;
+//}
+//
+//void funtest()
+//{
+//	BinarySearchTree bst;
+//	int arr[]={1,2,3,4,5,6,7,8,9};
+//	int i=0;
+//	for(;i<sizeof(arr)/sizeof(arr[0]);i++)
+//	{
+//		bst.Insert(arr[i],i);
+//	}
+//
+//	Node* list=GetList(bst._pRoot);
+//}
+//
+//int main()
+//{
+//	funtest();
+//	return 0;
+//}
+
+
+
+//C++实现一个线程安全且高效单例类。尽量能考虑懒汉模式和饿汉模式，并分析它们的优缺点
+//#include <windows.h>
+////#include <mutex>
+//
+////懒汉模式
+//class Single
+//{
+//public:
+//	static Single* Get()
+//	{
+//		if(_p==NULL)
+//		{
+//			//LOCK();
+//			if(_p==NULL)
+//			{
+//				_p=new Single;
+//			}
+//			//UNLOCK();
+//		}
+//
+//		return _p;
+//	}
+//
+//	struct GC
+//	{
+//		~GC()
+//		{
+//			DeleteSingle();
+//		}
+//	};
+//
+//	static void DeleteSingle()
+//	{
+//		if(_p!=NULL)
+//		{
+//			cout<<"delete"<<endl;
+//			delete _p;
+//			_p=NULL;
+//		}
+//	}
+//
+//private:
+//	Single()
+//	{}
+//
+//	Single(const Single&);
+//	
+//	static Single* _p;
+//	int _a;
+//	//static mutex _mx;
+//};
+//
+//Single* Single::_p=NULL;
+//static Single::GC c;
+////mutex Single::_mx;
+//
+//
+//
+////饿汉模式
+////class Single
+////{
+////public:
+////	static Single* Get()
+////	{
+////		return _p;
+////	}
+////
+////private:
+////	Single()
+////	{}
+////
+////	Single(const Single&);
+////
+////	static Single* _p;
+////};
+////
+////Single* Single::_p=new Single;
+//
+//
+////class Single
+////{
+////public:
+////	static Single* Get()
+////	{
+////		static Single s;
+////		return &s;
+////	}
+////
+////private:
+////	Single()
+////	{}
+////
+////	Single(const Single&);
+////};
+////
+//void funtest()
+//{
+//	Single* ps1=Single::Get();
+//	//Single* ps2=Single::Get();
+//	//Single* ps3=Single::Get();
+//}
+//
+//int main()
+//{
+//	funtest();
+//	return 0;
+//}
