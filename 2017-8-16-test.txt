@@ -1,0 +1,176 @@
+//删除小写字母字符串中重复字符。如果可以，优先删除重复字符中排在比他小字符前面的字符。
+//比如，输入：bbcacdww；输出：bacdw 
+//void Del(char* str)
+//{
+//	char count[26];
+//	memset(count,0,26);
+//
+//	int i=0;
+//	int len=strlen(str);
+//	for(i=0;i<len;i++)
+//	{
+//		count[str[i]-'a']++;
+//	}
+//
+//	int j=0;
+//	for(i=0;i<len;i++)
+//	{
+//		if(count[str[i]-'a']>1)
+//			count[str[i]-'a']--;
+//		else if(count[str[i]-'a']==1)
+//			str[j++]=str[i];
+//	}
+//
+//	str[j]=0;
+//}
+//
+//void funtest()
+//{
+//	char str[]="bbcacdww";
+//	Del(str);
+//	cout<<str<<endl;
+//}
+//
+//int main()
+//{
+//	funtest();
+//	return 0;
+//}
+
+
+
+
+//模拟实现C库的memcpy和memmove
+//#include <assert.h>
+//
+//void* Mymemcpy(void* dst,const void* src,size_t size)
+//{
+//	assert(dst);
+//	assert(src);
+//	char* ds=(char*)dst;
+//	const char* sr=(const char*)src;
+//	while(size--)
+//	{
+//		*ds++=*sr++;
+//	}
+//	return dst;
+//}
+//
+//
+//void* Mymemmove(void* dst,const void* src,size_t size)
+//{
+//	assert(dst);
+//	assert(src);
+//
+//	char* ds=(char*)dst;
+//	const char* sr=(const char*)src;
+//	if(ds>sr&&ds-sr<size)
+//	{
+//		ds+=size-1;
+//		sr+=size-1;
+//		while(size--)
+//		{
+//			*ds--=*sr--;
+//		}
+//	}
+//	else
+//	{
+//		while(size--)
+//		{
+//			*ds++=*sr++;
+//		}
+//	}
+//
+//	return dst;
+//}
+//
+//void funtest()
+//{
+//	char str[50]="hello world";
+//	char* dst=str+5;
+//	char* s=(char*)Mymemmove(dst,str,strlen(str)+1);
+//	cout<<dst<<endl;
+//	cout<<s<<endl;
+//}
+//
+//int main()
+//{
+//	funtest();
+//	return 0;
+//}
+
+
+
+//模拟实现C库的atoi和itoa
+#include <assert.h>
+
+//atoi---1.越过刚开始的空格 2.第一个+/-,且之后紧跟数字表示正负 3.当读取到数据后在遇到空格，终止 4.遇到其他字符，终止
+int myatoi(const char* str)
+{
+	assert(str);
+	int ret=0;
+	int len=strlen(str);
+	int i=0;
+	char ch='+';
+	for(i=0;i<len;i++)
+	{
+		if(str[i]==' '&&ret!=0)
+			break;
+		else if((str[i]=='+'||str[i]=='-')&&ret==0&&(str[i+1]>='0'&&str[i+1]<='9'))
+			ch=str[i];
+		else if((str[i]<'0'||str[i]>'9')&&str[i]!=' ')
+			break;
+		else if(str[i]>='0'&&str[i]<='9')
+			ret=ret*10+str[i]-'0';
+	}
+
+	if(ch=='-')
+		ret=-ret;
+
+	return ret;
+}
+
+//itoa
+char* myitoa(int value,char* buf,int base)
+{
+	assert(buf);
+	int i=0;
+	int left=0;
+	int right=0;
+	if(value<0)
+	{
+		buf[i++]='-';
+		value=-value;
+	}
+	left=i;
+	while(value)
+	{
+		buf[i++]=value%10+'0';
+		value/=10;
+	}
+	right=i-1;
+	while(left<right)
+	{
+		swap(buf[left],buf[right]);
+		left++;
+		right--;
+	}
+	buf[i]=0;
+	return buf;
+}
+
+void funtest()
+{
+	//char* str=" 1 2  3";
+	//cout<<myatoi(str)<<endl;
+
+	int i=11164925;
+	char str[20];
+	cout<<myitoa(i,str,16)<<endl;
+}
+
+int main()
+{
+	funtest();
+	return 0;
+}
